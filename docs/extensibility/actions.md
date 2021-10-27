@@ -206,7 +206,7 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
-File: [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
+File: [BlockTypes/MiniCart.php](../src/BlockTypes/MiniCart.php)
 
 ---
 
@@ -222,7 +222,7 @@ do_action( 'woocommerce_blocks_cart_enqueue_data' )
 ### Source
 
 
-File: [BlockTypes/MiniCart.php](../src/BlockTypes/MiniCart.php)
+File: [BlockTypes/Cart.php](../src/BlockTypes/Cart.php)
 
 ---
 
