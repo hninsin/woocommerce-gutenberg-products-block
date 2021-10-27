@@ -9,7 +9,6 @@
 
  - [__experimental_woocommerce_blocks_checkout_order_processed](#__experimental_woocommerce_blocks_checkout_order_processed)
  - [__experimental_woocommerce_blocks_checkout_update_order_from_request](#__experimental_woocommerce_blocks_checkout_update_order_from_request)
- - [__experimental_woocommerce_blocks_checkout_update_order_meta](#__experimental_woocommerce_blocks_checkout_update_order_meta)
  - [woocommerce_add_to_cart](#woocommerce_add_to_cart)
  - [woocommerce_applied_coupon](#woocommerce_applied_coupon)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data)
@@ -99,40 +98,6 @@ do_action( '__experimental_woocommerce_blocks_checkout_update_order_from_request
 | -------- | ---- | ----------- |
 | $order | \WC_Order | Order object. |
 | $request | \WP_REST_Request | Full details about the request. |
-
-### Source
-
-
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
-
----
-
-## __experimental_woocommerce_blocks_checkout_update_order_meta
-
-
-Fires when the Checkout Block/Store API updates an order's meta data.
-
-```php
-do_action( '__experimental_woocommerce_blocks_checkout_update_order_meta', \WC_Order $order )
-```
-
-
-**Note: This Hook is experimental and may change or be removed.**
-
-### Description
-
-<p>This hook gives extensions the chance to add or update meta data on the $order.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $order | \WC_Order | Order object. |
-
-### Related
-
-
- - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
 
 ### Source
 
