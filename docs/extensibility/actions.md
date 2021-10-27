@@ -8,13 +8,13 @@
 
 
  - [__experimental_woocommerce_blocks_checkout_order_processed](#__experimental_woocommerce_blocks_checkout_order_processed)
- - [__experimental_woocommerce_blocks_checkout_update_order_from_request](#__experimental_woocommerce_blocks_checkout_update_order_from_request)
  - [__experimental_woocommerce_blocks_checkout_update_order_meta](#__experimental_woocommerce_blocks_checkout_update_order_meta)
  - [woocommerce_add_to_cart](#woocommerce_add_to_cart)
  - [woocommerce_applied_coupon](#woocommerce_applied_coupon)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data-1)
  - [woocommerce_blocks_checkout_enqueue_data](#woocommerce_blocks_checkout_enqueue_data)
+ - [woocommerce_blocks_checkout_update_order_from_request](#woocommerce_blocks_checkout_update_order_from_request)
  - [woocommerce_blocks_enqueue_cart_block_scripts_after](#woocommerce_blocks_enqueue_cart_block_scripts_after)
  - [woocommerce_blocks_enqueue_cart_block_scripts_before](#woocommerce_blocks_enqueue_cart_block_scripts_before)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
@@ -69,36 +69,6 @@ add_action( '__experimental_woocommerce_blocks_checkout_order_processed', 'my_fu
 
 
  - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3238
-
-### Source
-
-
-File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
-
----
-
-## __experimental_woocommerce_blocks_checkout_update_order_from_request
-
-
-Fires when the Checkout Block/Store API updates an order's from the API request data.
-
-```php
-do_action( '__experimental_woocommerce_blocks_checkout_update_order_from_request', \WC_Order $order, \WP_REST_Request $request )
-```
-
-
-**Note: This Hook is experimental and may change or be removed.**
-
-### Description
-
-<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendRestAPI class to post custom data and then process it.</p>
-
-### Parameters
-
-| Argument | Type | Description |
-| -------- | ---- | ----------- |
-| $order | \WC_Order | Order object. |
-| $request | \WP_REST_Request | Full details about the request. |
 
 ### Source
 
@@ -239,6 +209,33 @@ do_action( 'woocommerce_blocks_checkout_enqueue_data' )
 
 
 File: [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
+
+---
+
+## woocommerce_blocks_checkout_update_order_from_request
+
+
+Fires when the Checkout Block/Store API updates an order's from the API request data.
+
+```php
+do_action( 'woocommerce_blocks_checkout_update_order_from_request', \WC_Order $order, \WP_REST_Request $request )
+```
+
+### Description
+
+<p>This hook gives extensions the chance to update orders based on the data in the request. This can be used in conjunction with the ExtendRestAPI class to post custom data and then process it.</p>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $order | \WC_Order | Order object. |
+| $request | \WP_REST_Request | Full details about the request. |
+
+### Source
+
+
+File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
