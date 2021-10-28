@@ -14,6 +14,7 @@
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data)
  - [woocommerce_blocks_cart_enqueue_data](#woocommerce_blocks_cart_enqueue_data-1)
  - [woocommerce_blocks_checkout_enqueue_data](#woocommerce_blocks_checkout_enqueue_data)
+ - [woocommerce_blocks_checkout_update_order_meta](#woocommerce_blocks_checkout_update_order_meta)
  - [woocommerce_blocks_enqueue_cart_block_scripts_after](#woocommerce_blocks_enqueue_cart_block_scripts_after)
  - [woocommerce_blocks_enqueue_cart_block_scripts_before](#woocommerce_blocks_enqueue_cart_block_scripts_before)
  - [woocommerce_blocks_enqueue_checkout_block_scripts_after](#woocommerce_blocks_enqueue_checkout_block_scripts_after)
@@ -204,6 +205,37 @@ do_action( 'woocommerce_blocks_checkout_enqueue_data' )
 
 
 File: [BlockTypes/Checkout.php](../src/BlockTypes/Checkout.php)
+
+---
+
+## woocommerce_blocks_checkout_update_order_meta
+
+
+Fires when the Checkout Block/Store API updates an order's meta data.
+
+```php
+do_action( 'woocommerce_blocks_checkout_update_order_meta', \WC_Order $order )
+```
+
+### Description
+
+<p>This hook gives extensions the chance to add or update meta data on the $order.</p> <p>This is similar to existing core hook woocommerce_checkout_update_order_meta. We're using a new action:</p> <ul> <li>To keep the interface focused (only pass $order, not passing request data).</li> <li>This also explicitly indicates these orders are from checkout block/StoreAPI.</li> </ul>
+
+### Parameters
+
+| Argument | Type | Description |
+| -------- | ---- | ----------- |
+| $order | \WC_Order | Order object. |
+
+### Related
+
+
+ - https://github.com/woocommerce/woocommerce-gutenberg-products-block/pull/3686
+
+### Source
+
+
+File: [StoreApi/Routes/Checkout.php](../src/StoreApi/Routes/Checkout.php)
 
 ---
 
