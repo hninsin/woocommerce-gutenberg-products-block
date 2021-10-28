@@ -3,8 +3,11 @@
  */
 import classNames from 'classnames';
 import { __, _n, sprintf } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
-import { translateJQueryEventToNative } from '@woocommerce/base-utils';
+import { RawHTML, useState, useEffect } from '@wordpress/element';
+import {
+	renderFrontend,
+	translateJQueryEventToNative,
+} from '@woocommerce/base-utils';
 import { useStoreCart } from '@woocommerce/base-context/hooks';
 import Drawer from '@woocommerce/base-components/drawer';
 import {
@@ -16,29 +19,35 @@ import { getSetting } from '@woocommerce/settings';
 /**
  * Internal dependencies
  */
-import CartLineItemsTable from '../cart/cart-line-items-table';
+import MiniCartContentsBlock from '../mini-cart-contents/block';
 import './style.scss';
 
 interface MiniCartBlockProps {
 	isInitiallyOpen?: boolean;
+	contents: string;
 }
 
 const MiniCartBlock = ( {
 	isInitiallyOpen = false,
+	contents = '',
 }: MiniCartBlockProps ): JSX.Element => {
-	const {
-		cartItems,
-		cartItemsCount,
-		cartIsLoading,
-		cartTotals,
-	} = useStoreCart();
+	const { cartItemsCount, cartIsLoading, cartTotals } = useStoreCart();
 	const [ isOpen, setIsOpen ] = useState< boolean >( isInitiallyOpen );
-	const emptyCartRef = useRef< HTMLDivElement | null >( null );
 	// We already rendered the HTML drawer placeholder, so we want to skip the
 	// slide in animation.
 	const [ skipSlideIn, setSkipSlideIn ] = useState< boolean >(
 		isInitiallyOpen
 	);
+
+	useEffect( () => {
+		if ( isOpen ) {
+			// @todo replace with a `wc-blocks_render_blocks_frontend` event
+			renderFrontend( {
+				selector: '.wc-block-mini-cart-contents',
+				Block: MiniCartContentsBlock,
+			} );
+		}
+	}, [ isOpen ] );
 
 	useEffect( () => {
 		const openMiniCart = () => {
@@ -67,16 +76,6 @@ const MiniCartBlock = ( {
 		};
 	}, [] );
 
-	useEffect( () => {
-		// If the cart has been completely emptied, move focus to empty cart
-		// element.
-		if ( isOpen && ! cartIsLoading && cartItems.length === 0 ) {
-			if ( emptyCartRef.current instanceof HTMLElement ) {
-				emptyCartRef.current.focus();
-			}
-		}
-	}, [ isOpen, cartIsLoading, cartItems.length, emptyCartRef ] );
-
 	const subTotal = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( cartTotals.total_items, 10 ) +
 		  parseInt( cartTotals.total_items_tax, 10 )
@@ -93,22 +92,6 @@ const MiniCartBlock = ( {
 		cartItemsCount,
 		formatPrice( subTotal, getCurrencyFromPriceResponse( cartTotals ) )
 	);
-
-	const contents =
-		! cartIsLoading && cartItems.length === 0 ? (
-			<div
-				className="wc-block-mini-cart__empty-cart"
-				tabIndex={ -1 }
-				ref={ emptyCartRef }
-			>
-				{ __( 'Cart is empty', 'woo-gutenberg-products-block' ) }
-			</div>
-		) : (
-			<CartLineItemsTable
-				lineItems={ cartItems }
-				isLoading={ cartIsLoading }
-			/>
-		);
 
 	return (
 		<>
@@ -161,7 +144,7 @@ const MiniCartBlock = ( {
 				} }
 				slideIn={ ! skipSlideIn }
 			>
-				{ contents }
+				<RawHTML>{ contents }</RawHTML>
 			</Drawer>
 		</>
 	);

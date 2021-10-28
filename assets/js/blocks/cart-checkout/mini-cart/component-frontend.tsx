@@ -32,6 +32,8 @@ const renderMiniCartFrontend = () => {
 		getProps: ( el: HTMLElement ) => ( {
 			isDataOutdated: el.dataset.isDataOutdated,
 			isInitiallyOpen: el.dataset.isInitiallyOpen === 'true',
+			contents: el.querySelector( '.wc-block-mini-cart__template-part' )
+				?.innerHTML,
 		} ),
 	} );
 

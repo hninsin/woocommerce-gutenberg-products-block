@@ -228,6 +228,13 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_count,
 			wp_strip_all_tags( wc_price( $cart_contents_total ) )
 		);
+
+		if ( is_cart() || is_checkout() ) {
+			return '<div class="wc-block-mini-cart">
+				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_text . '</button>
+			</div>';
+		}
+
 		$title = sprintf(
 			/* translators: %d is the count of items in the cart. */
 			_n(
@@ -239,10 +246,11 @@ class MiniCart extends AbstractBlock {
 			$cart_contents_count
 		);
 
-		if ( is_cart() || is_checkout() ) {
-			return '<div class="wc-block-mini-cart">
-				<button class="wc-block-mini-cart__button" aria-label="' . $aria_label . '" disabled>' . $button_text . '</button>
-			</div>';
+		$part                   = 'mini-cart';
+		$template_part          = gutenberg_get_block_template( get_stylesheet() . '//' . $part, 'wp_template_part' );
+		$template_part_contents = '';
+		if ( $template_part && ! empty( $template_part->content ) ) {
+			$template_part_contents = do_blocks( $template_part->content );
 		}
 
 		return '<div class="wc-block-mini-cart">
@@ -254,63 +262,13 @@ class MiniCart extends AbstractBlock {
 							<div class="components-modal__header-heading-container">
 								<h1 id="components-modal-header-1" class="components-modal__header-heading">' . $title . '</h1>
 							</div>
-						</div>'
-						. $this->get_cart_contents_markup( $cart_contents ) .
-					'</div>
+						</div>
+						<div class="wc-block-mini-cart__template-part">'
+						. $template_part_contents .
+						'</div>
+					</div>
 				</div>
 			</div>
 		</div>';
-	}
-
-	/**
-	 * Render the markup of the Cart contents.
-	 *
-	 * @param array $cart_contents Array of contents in the cart.
-	 *
-	 * @return string The HTML markup.
-	 */
-	protected function get_cart_contents_markup( $cart_contents ) {
-		// Force mobile styles.
-		return '<table class="wc-block-cart-items">
-			<thead>
-				<tr class="wc-block-cart-items__header">
-					<th class="wc-block-cart-items__header-image"><span /></th>
-					<th class="wc-block-cart-items__header-product"><span /></th>
-					<th class="wc-block-cart-items__header-total"><span /></th>
-				</tr>
-			</thead>
-			<tbody>' . implode( array_map( array( $this, 'get_cart_item_markup' ), $cart_contents ) ) . '</tbody>
-		</table>';
-	}
-
-	/**
-	 * Render the skeleton of a Cart item.
-	 *
-	 * @return string The skeleton HTML markup.
-	 */
-	protected function get_cart_item_markup() {
-		return '<tr class="wc-block-cart-items__row">
-			<td class="wc-block-cart-item__image">
-				<a href=""><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" width="1" height="1" /></a>
-			</td>
-			<td class="wc-block-cart-item__product">
-				<div class="wc-block-components-product-name"></div>
-				<div class="wc-block-components-product-price"></div>
-				<div class="wc-block-components-product-metadata"></div>
-				<div class="wc-block-cart-item__quantity">
-					<div class="wc-block-components-quantity-selector">
-						<input class="wc-block-components-quantity-selector__input" type="number" step="1" min="0" value="1" />
-						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--minus">－</button>
-						<button class="wc-block-components-quantity-selector__button wc-block-components-quantity-selector__button--plus">＋</button>
-					</div>
-					<button class="wc-block-cart-item__remove-link"></button>
-				</div>
-			</td>
-			<td class="wc-block-cart-item__total">
-				<div class="wc-block-cart-item__total-price-and-sale-badge-wrapper">
-					<div class="wc-block-components-product-price"></div>
-				</div>
-			</td>
-		</tr>';
 	}
 }
