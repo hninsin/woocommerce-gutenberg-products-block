@@ -61,7 +61,7 @@ class CartItemSchema extends ProductSchema {
 				'context'     => [ 'view', 'edit' ],
 				'readonly'    => true,
 			],
-			'quantity_increment'   => [
+			'quantity_step'        => [
 				'description' => __( 'The amount quantity can change with.', 'woo-gutenberg-products-block' ),
 				'type'        => 'integer',
 				'context'     => [ 'view', 'edit' ],
