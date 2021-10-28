@@ -51,15 +51,16 @@ const renderBlockInContainers = ( {
 			...el.dataset,
 			...( props.attributes || {} ),
 		};
-		el.classList.remove( 'is-loading' );
-
 		render(
 			<BlockErrorBoundary { ...errorBoundaryProps }>
 				<Suspense fallback={ <div className="wc-block-placeholder" /> }>
 					<Block { ...props } attributes={ attributes } />
 				</Suspense>
 			</BlockErrorBoundary>,
-			el
+			el,
+			() => {
+				el.classList.remove( 'is-loading' );
+			}
 		);
 	} );
 };
